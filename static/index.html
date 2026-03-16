@@ -526,9 +526,10 @@
   #cameraPreview {
     width: 100%;
     aspect-ratio: 4/3;
-    object-fit: cover;
+    object-fit: contain;
     background: #000;
     display: block;
+    max-height: 60vh;
   }
 
   .modal-footer {
@@ -981,15 +982,73 @@
   // ── Camera Capture ────────────────────────────────────────────────────────
   let cameraStream = null;
 
-  async function openCamera() {
-    const modal = document.getElementById('cameraModal');
+  // Track which camera is active: 'user' = front, 'environment' = back
+  let currentFacingMode = 'environment';  // default to back camera
+  let isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  async function startCameraStream(facingMode) {
     const video = document.getElementById('cameraPreview');
+
+    // Stop existing stream first
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(t => t.stop());
+      cameraStream = null;
+    }
+
     try {
       cameraStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
+        video: {
+          facingMode: { ideal: facingMode },
+          width:  { ideal: 1280 },
+          height: { ideal: 720 }
+        },
         audio: false
       });
       video.srcObject = cameraStream;
+      currentFacingMode = facingMode;
+
+      // Fix orientation on mobile — rotate video if needed
+      const track = cameraStream.getVideoTracks()[0];
+      const settings = track.getSettings();
+      updateVideoOrientation(video, settings);
+
+      // Always show flip button on mobile, hide on desktop
+      const flipBtn = document.getElementById('flipCameraBtn');
+      if (flipBtn) flipBtn.style.display = isMobile ? 'inline-flex' : 'none';
+
+    } catch (err) {
+      // Fallback: try without facingMode constraint
+      try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        video.srcObject = cameraStream;
+        currentFacingMode = facingMode;
+      } catch (fallbackErr) {
+        throw fallbackErr;
+      }
+    }
+  }
+
+  function updateVideoOrientation(video, settings) {
+    // Reset any previous transform
+    video.style.transform = '';
+    video.style.width = '100%';
+    video.style.height = '';
+
+    // On mobile, if video is portrait but container is landscape (or vice versa), fix it
+    if (isMobile && settings && settings.width && settings.height) {
+      if (settings.width < settings.height) {
+        // Portrait video — ensure it displays correctly
+        video.style.width = 'auto';
+        video.style.height = '100%';
+        video.style.maxWidth = '100%';
+      }
+    }
+  }
+
+  async function openCamera() {
+    const modal = document.getElementById('cameraModal');
+    try {
+      await startCameraStream(currentFacingMode);
       modal.classList.add('open');
     } catch (err) {
       if (err.name === 'NotAllowedError') {
@@ -999,6 +1058,20 @@
       } else {
         showError('Could not open camera: ' + err.message);
       }
+    }
+  }
+
+  async function flipCamera() {
+    const flipBtn = document.getElementById('flipCameraBtn');
+    const newFacing = currentFacingMode === 'environment' ? 'user' : 'environment';
+    if (flipBtn) flipBtn.style.opacity = '0.5';
+    try {
+      await startCameraStream(newFacing);
+      showToast(newFacing === 'environment' ? '📷 Back camera' : '🤳 Front camera');
+    } catch (err) {
+      showError('Could not switch camera: ' + err.message);
+    } finally {
+      if (flipBtn) flipBtn.style.opacity = '1';
     }
   }
 
@@ -1017,7 +1090,6 @@
     const video = document.getElementById('cameraPreview');
     if (!video.srcObject) return;
 
-    // Draw current video frame to canvas
     const canvas = document.createElement('canvas');
     canvas.width  = video.videoWidth  || 1280;
     canvas.height = video.videoHeight || 720;
@@ -1063,6 +1135,13 @@
     <video id="cameraPreview" autoplay playsinline muted></video>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeCamera()">Cancel</button>
+      <button class="btn btn-ghost" id="flipCameraBtn" onclick="flipCamera()" title="Switch camera">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 4v6h6"/><path d="M23 20v-6h-6"/>
+          <path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/>
+        </svg>
+        Flip
+      </button>
       <button class="btn btn-primary" onclick="capturePhoto()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
         Capture Photo
