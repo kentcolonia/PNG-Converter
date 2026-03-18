@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>BG Remover — AI Background Removal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -29,83 +29,82 @@
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 300;
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    /* Subtle grid pattern */
     background-image:
       linear-gradient(var(--border) 1px, transparent 1px),
       linear-gradient(90deg, var(--border) 1px, transparent 1px);
     background-size: 40px 40px;
-    background-position: -1px -1px;
   }
 
   /* ── Header ── */
   header {
     border-bottom: 1px solid var(--border);
-    background: rgba(12,12,15,0.95);
+    background: rgba(12,12,15,0.97);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
     z-index: 100;
-    padding: 0 32px;
-    height: 60px;
+    padding: 0 16px;
+    height: 56px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-shrink: 0;
   }
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .logo { display: flex; align-items: center; gap: 8px; }
 
   .logo-mark {
-    width: 28px; height: 28px;
+    width: 30px; height: 30px;
     background: var(--accent);
-    border-radius: 6px;
+    border-radius: 7px;
     display: grid;
     place-items: center;
+    flex-shrink: 0;
   }
 
   .logo-mark svg { width: 16px; height: 16px; }
 
   .logo-text {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     letter-spacing: 0.08em;
-    color: var(--text);
   }
-
   .logo-text span { color: var(--accent); }
 
   .header-badge {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
+    font-size: 9px;
     color: var(--accent);
     border: 1px solid var(--accent);
-    padding: 3px 8px;
+    padding: 3px 6px;
     border-radius: 2px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
   }
 
   /* ── Status Bar ── */
   #statusBar {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 8px 32px;
+    padding: 6px 16px;
     display: flex;
     align-items: center;
     gap: 8px;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
+    flex-shrink: 0;
   }
 
   #statusDot {
     width: 7px; height: 7px;
     border-radius: 50%;
     background: var(--muted);
+    flex-shrink: 0;
     transition: background 0.3s;
   }
   #statusDot.online { background: var(--accent); box-shadow: 0 0 6px var(--accent-glow); }
@@ -114,51 +113,47 @@
   /* ── Main ── */
   main {
     flex: 1;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 48px 24px;
-  }
-
-  .workspace {
-    width: 100%;
-    max-width: 980px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 12px;
+    max-width: 980px;
+    width: 100%;
+    margin: 0 auto;
   }
 
   /* ── Panel ── */
   .panel {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-radius: 8px;
     overflow: hidden;
   }
 
   .panel-header {
-    padding: 12px 20px;
+    padding: 10px 14px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
   }
 
   .panel-title {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
+    font-size: 10px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
   }
 
-  .panel-body { padding: 24px; }
+  .panel-body { padding: 12px; }
 
   /* ── Drop Zone ── */
   #dropZone {
     border: 1.5px dashed var(--border-bright);
-    border-radius: 4px;
-    padding: 72px 40px;
+    border-radius: 6px;
+    padding: 32px 16px;
     text-align: center;
     cursor: pointer;
     position: relative;
@@ -182,33 +177,60 @@
   }
 
   .drop-icon {
-    width: 56px; height: 56px;
-    margin: 0 auto 20px;
+    width: 48px; height: 48px;
+    margin: 0 auto 12px;
     border: 1.5px solid var(--border-bright);
-    border-radius: 8px;
+    border-radius: 10px;
     display: grid;
     place-items: center;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  #dropZone:hover .drop-icon,
-  #dropZone.drag-over .drop-icon {
-    border-color: var(--accent);
-    background: var(--accent-dim);
   }
 
   .drop-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
+    font-size: 22px;
     letter-spacing: 0.06em;
-    color: var(--text);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .drop-sub {
-    font-size: 13px;
+    font-size: 11px;
     color: var(--muted);
     font-family: 'IBM Plex Mono', monospace;
+    line-height: 1.6;
+  }
+
+  /* ── Input Methods ── */
+  .input-methods {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .method-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 12px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-bright);
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.15s;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .method-btn:active {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   /* ── Batch List ── */
@@ -216,17 +238,18 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin-top: 10px;
   }
 
   .batch-item {
     display: grid;
-    grid-template-columns: 48px 1fr auto auto;
+    grid-template-columns: 48px 1fr auto;
     align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
+    gap: 10px;
+    padding: 10px;
     background: rgba(255,255,255,0.02);
     border: 1px solid var(--border);
-    border-radius: 3px;
+    border-radius: 6px;
     animation: slideIn 0.2s ease;
   }
 
@@ -237,17 +260,17 @@
 
   .batch-thumb {
     width: 48px; height: 48px;
-    border-radius: 3px;
+    border-radius: 4px;
     object-fit: cover;
     border: 1px solid var(--border);
     background: var(--border);
   }
 
-  .batch-info { overflow: hidden; }
+  .batch-info { overflow: hidden; min-width: 0; }
 
   .batch-name {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text);
     white-space: nowrap;
     overflow: hidden;
@@ -255,7 +278,7 @@
   }
 
   .batch-size {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
     margin-top: 2px;
     font-family: 'IBM Plex Mono', monospace;
@@ -263,52 +286,26 @@
 
   .batch-status {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 2px;
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 3px;
     white-space: nowrap;
-    min-width: 90px;
     text-align: center;
+    flex-shrink: 0;
   }
 
-  .status-waiting  { background: rgba(90,90,104,0.2); color: var(--muted); }
+  .status-waiting    { background: rgba(90,90,104,0.2);  color: var(--muted); }
   .status-processing { background: rgba(255,165,2,0.15); color: var(--warn); }
-  .status-done     { background: rgba(0,229,160,0.12); color: var(--accent); }
-  .status-error    { background: rgba(255,71,87,0.12); color: var(--danger); }
+  .status-done       { background: rgba(0,229,160,0.12); color: var(--accent); }
+  .status-error      { background: rgba(255,71,87,0.12); color: var(--danger); }
 
-  .batch-download {
-    background: none;
-    border: 1px solid var(--border-bright);
-    color: var(--muted);
-    padding: 6px 12px;
-    border-radius: 2px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .batch-download:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .batch-download:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  /* ── Progress Bar ── */
+  /* ── Progress ── */
   .progress-wrap {
-    height: 2px;
+    height: 3px;
     background: var(--border);
-    border-radius: 1px;
+    border-radius: 2px;
     overflow: hidden;
-    margin-top: 6px;
+    margin-top: 10px;
   }
 
   .progress-bar {
@@ -322,46 +319,56 @@
   /* ── Action Bar ── */
   .action-bar {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .action-info {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
+    text-align: center;
   }
 
+  .action-buttons {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+  }
+
+  /* ── Buttons ── */
   .btn {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     letter-spacing: 0.06em;
-    padding: 10px 24px;
-    border-radius: 3px;
+    padding: 14px 20px;
+    border-radius: 6px;
     border: none;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     transition: all 0.15s;
     text-transform: uppercase;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   .btn-primary {
     background: var(--accent);
     color: #000;
     font-weight: 600;
+    width: 100%;
   }
 
-  .btn-primary:hover:not(:disabled) {
+  .btn-primary:active:not(:disabled) {
     background: #00ffb3;
-    box-shadow: 0 0 20px var(--accent-glow);
+    transform: scale(0.98);
   }
 
   .btn-primary:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
   }
 
@@ -369,27 +376,30 @@
     background: none;
     border: 1px solid var(--border-bright);
     color: var(--muted);
+    white-space: nowrap;
   }
 
-  .btn-ghost:hover { border-color: var(--text); color: var(--text); }
+  .btn-ghost:active { border-color: var(--text); color: var(--text); }
 
   /* ── Results Grid ── */
   #resultsGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
   .result-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-radius: 8px;
     overflow: hidden;
     animation: fadeUp 0.3s ease;
+    display: flex;
+    flex-direction: column;
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
@@ -406,6 +416,7 @@
     background-size: 12px 12px;
     background-position: 0 0, 0 6px, 6px -6px, -6px 0;
     overflow: hidden;
+    position: relative;
   }
 
   .result-preview img {
@@ -414,13 +425,31 @@
     object-fit: contain;
   }
 
+  /* Tap to expand overlay */
+  .result-preview::after {
+    content: '⤢';
+    position: absolute;
+    top: 6px; right: 6px;
+    background: rgba(0,0,0,0.5);
+    color: var(--accent);
+    font-size: 12px;
+    width: 24px; height: 24px;
+    border-radius: 4px;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .result-preview:hover::after { opacity: 1; }
+
   .result-footer {
-    padding: 8px 10px;
+    padding: 8px;
     border-top: 1px solid var(--border);
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 6px;
+    flex: 1;
   }
 
   .result-name {
@@ -430,35 +459,81 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    flex: 1;
+  }
+
+  .result-actions {
+    display: flex;
+    gap: 4px;
   }
 
   .result-dl {
+    flex: 1;
     background: var(--accent-dim);
     border: 1px solid rgba(0,229,160,0.3);
     color: var(--accent);
     font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
-    padding: 4px 8px;
-    border-radius: 2px;
+    padding: 8px 4px;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.15s;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .result-dl:active {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .result-method {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    background: rgba(0,229,160,0.1);
+    color: var(--accent);
+    text-transform: uppercase;
+    align-self: center;
     white-space: nowrap;
   }
 
-  .result-dl:hover {
-    background: var(--accent);
-    color: #000;
+  /* ── Lightbox ── */
+  #lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  #lightbox.open { display: flex; }
+
+  #lightboxImg {
+    max-width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+
+  .lightbox-actions {
+    display: flex;
+    gap: 10px;
   }
 
   /* ── Error Banner ── */
   #errorBanner {
     background: rgba(255,71,87,0.08);
     border: 1px solid rgba(255,71,87,0.3);
-    border-radius: 3px;
-    padding: 12px 16px;
+    border-radius: 6px;
+    padding: 10px 14px;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--danger);
     display: none;
     align-items: center;
@@ -467,48 +542,64 @@
 
   /* ── Spinner ── */
   .spin {
-    width: 14px; height: 14px;
+    width: 13px; height: 13px;
     border: 2px solid transparent;
     border-top-color: currentColor;
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
     display: inline-block;
+    flex-shrink: 0;
   }
-
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ── Camera Modal ── */
   .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(6px);
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
     z-index: 1000;
     display: none;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
+    padding: 0;
   }
+
   .modal-overlay.open { display: flex; }
 
   .modal {
     background: var(--surface);
     border: 1px solid var(--border-bright);
-    border-radius: 8px;
-    overflow: hidden;
-    width: 90%;
+    border-radius: 16px 16px 0 0;
+    width: 100%;
     max-width: 640px;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
   }
 
   .modal-header {
-    padding: 14px 20px;
+    padding: 12px 16px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
+  }
+
+  /* Modal drag handle */
+  .modal-handle {
+    width: 36px; height: 4px;
+    background: var(--border-bright);
+    border-radius: 2px;
+    margin: 10px auto 0;
   }
 
   .modal-close {
@@ -516,12 +607,11 @@
     border: none;
     color: var(--muted);
     cursor: pointer;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1;
-    padding: 0 4px;
-    transition: color 0.15s;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
   }
-  .modal-close:hover { color: var(--text); }
 
   #cameraPreview {
     width: 100%;
@@ -529,54 +619,22 @@
     object-fit: contain;
     background: #000;
     display: block;
-    max-height: 60vh;
+    max-height: 55vh;
   }
 
   .modal-footer {
-    padding: 14px 20px;
+    padding: 12px 16px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
     border-top: 1px solid var(--border);
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-  }
-
-  /* ── Input Method Buttons ── */
-  .input-methods {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
     gap: 8px;
-    margin-top: 14px;
-    flex-wrap: wrap;
   }
 
-  .method-btn {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 8px 14px;
-    border-radius: 3px;
-    border: 1px solid var(--border-bright);
-    background: none;
-    color: var(--muted);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    transition: all 0.15s;
-    flex: 1;
-    justify-content: center;
-  }
-
-  .method-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: var(--accent-dim);
-  }
-
-  /* ── Paste Flash ── */
+  /* ── Toast ── */
   .paste-flash {
     position: fixed;
-    bottom: 24px;
+    bottom: max(24px, env(safe-area-inset-bottom));
     left: 50%;
     transform: translateX(-50%) translateY(20px);
     background: var(--accent);
@@ -585,44 +643,69 @@
     font-size: 12px;
     font-weight: 600;
     padding: 10px 20px;
-    border-radius: 4px;
+    border-radius: 50px;
     z-index: 9999;
     opacity: 0;
     transition: all 0.3s ease;
     pointer-events: none;
+    white-space: nowrap;
   }
+
   .paste-flash.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
 
-
   /* ── Footer ── */
   footer {
     border-top: 1px solid var(--border);
-    padding: 16px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 12px 16px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    text-align: center;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
+    flex-shrink: 0;
   }
 
-  /* ── Responsive ── */
-  @media (max-width: 600px) {
-    main { padding: 24px 12px; }
-    header { padding: 0 16px; }
+  /* ── Desktop Overrides ── */
+  @media (min-width: 640px) {
+    header { padding: 0 24px; height: 60px; }
+    #statusBar { padding: 8px 24px; font-size: 11px; }
+    main { padding: 24px; gap: 16px; }
     .panel-body { padding: 16px; }
-    #dropZone { padding: 48px 20px; }
-    .batch-item { grid-template-columns: 40px 1fr auto; }
-    .batch-download { display: none; }
+    .drop-title { font-size: 28px; }
+    #dropZone { padding: 56px 32px; }
+
+    .input-methods { grid-template-columns: 1fr 1fr; }
+    .method-btn { padding: 10px 14px; }
+    .method-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .action-bar { flex-direction: row; align-items: center; justify-content: space-between; }
+    .action-buttons { grid-template-columns: auto auto; width: auto; }
+    .btn-primary { width: auto; }
+
+    #resultsGrid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+
+    .batch-item { grid-template-columns: 48px 1fr auto auto; }
+
+    .modal {
+      border-radius: 12px;
+      margin: 20px;
+      max-width: 600px;
+    }
+    .modal-overlay { align-items: center; }
+    .modal-footer { grid-template-columns: 1fr 1fr 2fr; }
+    .modal-handle { display: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <header>
   <div class="logo">
     <div class="logo-mark">
@@ -633,125 +716,152 @@
     </div>
     <span class="logo-text">BG<span>.</span>REMOVER</span>
   </div>
-  <div class="header-badge">LOCAL · FREE · PRIVATE</div>
+  <div class="header-badge">FREE · PRIVATE</div>
 </header>
 
-<!-- Status Bar -->
 <div id="statusBar">
   <div id="statusDot"></div>
   <span id="statusText">Checking server…</span>
 </div>
 
-<!-- Main -->
 <main>
-  <div class="workspace">
 
-    <!-- Error Banner -->
-    <div id="errorBanner">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 018 4zm0 8a1 1 0 110-2 1 1 0 010 2z"/></svg>
-      <span id="errorText"></span>
-    </div>
-
-    <!-- Upload Panel -->
-    <div class="panel">
-      <div class="panel-header">
-        <span class="panel-title">// Upload Images</span>
-        <span class="panel-title" id="fileCount">0 files queued</span>
-      </div>
-      <div class="panel-body">
-        <div id="dropZone">
-          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple>
-          <div class="drop-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-          </div>
-          <div class="drop-title">Drop images here</div>
-          <div class="drop-sub">JPG · PNG · WEBP &nbsp;|&nbsp; Max 15MB each &nbsp;|&nbsp; Batch supported</div>
-        </div>
-
-
-        <!-- Input Method Buttons -->
-        <div class="input-methods">
-          <button class="method-btn" onclick="triggerPaste()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2"/></svg>
-            Paste Image
-            <span style="font-size:9px; opacity:0.5;">Ctrl+V</span>
-          </button>
-          <button class="method-btn" onclick="openCamera()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            Capture from Camera
-          </button>
-        </div>
-
-        <!-- Batch List -->
-        <div id="batchList" style="margin-top:16px; display:none;"></div>
-
-        <!-- Progress -->
-        <div id="progressWrap" class="progress-wrap" style="margin-top:16px; display:none;">
-          <div id="progressBar" class="progress-bar"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Action Bar -->
-    <div class="action-bar">
-      <span class="action-info" id="actionInfo">Select images to get started.</span>
-      <div style="display:flex;gap:10px;">
-        <button class="btn btn-ghost" id="clearBtn" style="display:none;" onclick="clearAll()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
-          Clear
-        </button>
-        <button class="btn btn-primary" id="processBtn" disabled onclick="processAll()">
-          <span id="processBtnIcon">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          </span>
-          <span id="processBtnText">Remove Backgrounds</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Results Panel -->
-    <div class="panel" id="resultsPanel" style="display:none;">
-      <div class="panel-header">
-        <span class="panel-title">// Results</span>
-        <button class="btn btn-ghost" style="padding:4px 12px; font-size:10px;" onclick="downloadAll()">
-          Download All
-        </button>
-      </div>
-      <div class="panel-body">
-        <div id="resultsGrid"></div>
-      </div>
-    </div>
-
+  <!-- Error -->
+  <div id="errorBanner">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 018 4zm0 8a1 1 0 110-2 1 1 0 010 2z"/></svg>
+    <span id="errorText"></span>
   </div>
+
+  <!-- Upload Panel -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">// Upload</span>
+      <span class="panel-title" id="fileCount">0 files</span>
+    </div>
+    <div class="panel-body">
+
+      <!-- Drop Zone -->
+      <div id="dropZone">
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple>
+        <div class="drop-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div class="drop-title">Drop images here</div>
+        <div class="drop-sub">JPG · PNG · WEBP · Max 15MB<br>or use buttons below</div>
+      </div>
+
+      <!-- Input methods -->
+      <div class="input-methods">
+        <button class="method-btn" onclick="triggerPaste()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M8 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2"/></svg>
+          Paste <span style="opacity:0.5;font-size:9px;">Ctrl+V</span>
+        </button>
+        <button class="method-btn" onclick="openCamera()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Camera
+        </button>
+      </div>
+
+      <!-- Batch list -->
+      <div id="batchList" style="display:none;"></div>
+
+      <!-- Progress -->
+      <div id="progressWrap" class="progress-wrap" style="display:none;">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <span class="action-info" id="actionInfo">Select images to get started.</span>
+    <div class="action-buttons">
+      <button class="btn btn-ghost" id="clearBtn" style="display:none;" onclick="clearAll()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+        Clear
+      </button>
+      <button class="btn btn-primary" id="processBtn" disabled onclick="processAll()">
+        <span id="processBtnIcon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </span>
+        <span id="processBtnText">Remove Backgrounds</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Panel -->
+  <div class="panel" id="resultsPanel" style="display:none;">
+    <div class="panel-header">
+      <span class="panel-title">// Results</span>
+      <button class="btn btn-ghost" style="padding:6px 12px; font-size:10px;" onclick="downloadAll()">
+        ↓ Download All
+      </button>
+    </div>
+    <div class="panel-body">
+      <div id="resultsGrid"></div>
+    </div>
+  </div>
+
 </main>
 
-<footer>
-  <span>Powered by rembg + u2net_human_seg &nbsp;·&nbsp; FastAPI backend</span>
-  <span>100% local · no data leaves your machine</span>
-</footer>
+<footer>Powered by rembg · isnet-general-use · 100% local</footer>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="Result">
+  <div class="lightbox-actions" onclick="event.stopPropagation()">
+    <button class="btn btn-ghost" onclick="closeLightbox()">✕ Close</button>
+    <button class="btn btn-primary" id="lightboxDlBtn" style="min-width:140px;">↓ Download</button>
+  </div>
+</div>
+
+<!-- Camera Modal -->
+<div class="modal-overlay" id="cameraModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span>// Camera</span>
+      <button class="modal-close" onclick="closeCamera()">×</button>
+    </div>
+    <video id="cameraPreview" autoplay playsinline muted></video>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeCamera()" style="padding:12px 8px; font-size:11px;">Cancel</button>
+      <button class="btn btn-ghost" id="flipCameraBtn" onclick="flipCamera()" style="display:inline-flex; padding:12px 8px; font-size:11px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/></svg>
+        Flip
+      </button>
+      <button class="btn btn-primary" onclick="capturePhoto()" style="padding:12px 8px; font-size:11px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+        Capture
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="paste-flash" id="pasteFlash"></div>
 
 <script>
-  const API = '';  // same origin
-
-  // ── State ────────────────────────────────────────────────────────────────
-  let files = [];        // { file, name, size, thumbUrl, status, downloadUrl }
+  const API = '';
+  let files = [];
   let processing = false;
+  let currentFacingMode = 'environment';
+  let cameraStream = null;
+  let isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  // ── Server Health Check ──────────────────────────────────────────────────
+  // ── Health Check ──────────────────────────────────────────────────────────
   async function checkHealth() {
     try {
       const r = await fetch(`${API}/health`);
-      if (r.ok) {
-        setStatus('online', 'Server online · Model loaded · Ready to process');
-      } else {
-        setStatus('error', 'Server error — check your terminal');
-      }
+      if (r.ok) setStatus('online', 'Server online · Ready');
+      else setStatus('error', 'Server error');
     } catch {
-      setStatus('error', 'Cannot reach server · Run: python app.py');
+      setStatus('error', 'Cannot reach server');
     }
   }
 
@@ -774,19 +884,18 @@
     ev.preventDefault(); dropZone.classList.remove('drag-over');
   }));
   dropZone.addEventListener('drop', e => addFiles(e.dataTransfer.files));
-  fileInput.addEventListener('change', () => addFiles(fileInput.files));
+  fileInput.addEventListener('change', () => { addFiles(fileInput.files); fileInput.value = ''; });
 
   function addFiles(fileList) {
     for (const f of fileList) {
       if (!f.type.startsWith('image/')) continue;
-      if (f.size > 15 * 1024 * 1024) { showError(`${f.name} exceeds 15MB limit.`); continue; }
+      if (f.size > 15 * 1024 * 1024) { showError(`${f.name} exceeds 15MB`); continue; }
       files.push({ file: f, name: f.name, size: f.size, thumbUrl: URL.createObjectURL(f), status: 'waiting', downloadUrl: null });
     }
     renderBatch();
-    fileInput.value = '';
   }
 
-  // ── Render Batch List ────────────────────────────────────────────────────
+  // ── Render Batch ──────────────────────────────────────────────────────────
   function renderBatch() {
     const list = document.getElementById('batchList');
     const fc   = document.getElementById('fileCount');
@@ -794,7 +903,7 @@
     const cb   = document.getElementById('clearBtn');
     const info = document.getElementById('actionInfo');
 
-    fc.textContent = `${files.length} file${files.length !== 1 ? 's' : ''} queued`;
+    fc.textContent = `${files.length} file${files.length !== 1 ? 's' : ''}`;
 
     if (files.length === 0) {
       list.style.display = 'none';
@@ -807,29 +916,25 @@
     list.style.display = 'flex';
     cb.style.display = 'inline-flex';
     pb.disabled = processing;
-    info.textContent = `${files.length} image${files.length !== 1 ? 's' : ''} ready · Uses u2net_human_seg model`;
+    info.textContent = `${files.length} image${files.length !== 1 ? 's' : ''} ready`;
 
     list.innerHTML = files.map((f, i) => `
-      <div class="batch-item" id="item-${i}">
+      <div class="batch-item">
         <img class="batch-thumb" src="${f.thumbUrl}" alt="">
         <div class="batch-info">
           <div class="batch-name">${f.name}</div>
-          <div class="batch-size">${(f.size / 1024).toFixed(0)} KB</div>
+          <div class="batch-size">${(f.size/1024).toFixed(0)} KB</div>
         </div>
         <span class="batch-status status-${f.status}">${statusLabel(f.status)}</span>
-        <button class="batch-download" onclick="downloadSingle(${i})" ${f.downloadUrl ? '' : 'disabled'}>
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Save PNG
-        </button>
       </div>
     `).join('');
   }
 
   function statusLabel(s) {
-    return { waiting: '⬤ WAITING', processing: '⬤ PROCESSING…', done: '⬤ DONE', error: '⬤ ERROR' }[s] || s;
+    return { waiting: 'WAITING', processing: 'PROCESSING…', done: '✓ DONE', error: '✗ ERROR' }[s] || s;
   }
 
-  // ── Process All ──────────────────────────────────────────────────────────
+  // ── Process ───────────────────────────────────────────────────────────────
   async function processAll() {
     if (processing || files.length === 0) return;
     processing = true;
@@ -854,14 +959,11 @@
         const fd = new FormData();
         fd.append('file', files[i].file);
         const res = await fetch(`${API}/remove-bg`, { method: 'POST', body: fd });
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.detail || 'Server error');
-        }
+        if (!res.ok) { const err = await res.json(); throw new Error(err.detail || 'Error'); }
         const data = await res.json();
         files[i].status = 'done';
         files[i].downloadUrl = data.download_url;
-        files[i].resultFilename = data.filename;
+        files[i].method = data.method;
         addResult(i, data);
       } catch (e) {
         files[i].status = 'error';
@@ -877,7 +979,7 @@
     document.getElementById('processBtn').disabled = false;
     document.getElementById('processBtnText').textContent = 'Remove Backgrounds';
     document.getElementById('processBtnIcon').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
-    setStatus('online', `Done · Processed ${done} image${done !== 1 ? 's' : ''}`);
+    setStatus('online', `Done · ${done} processed`);
   }
 
   // ── Results ───────────────────────────────────────────────────────────────
@@ -886,20 +988,42 @@
     const grid  = document.getElementById('resultsGrid');
     panel.style.display = 'block';
 
+    // Scroll results into view on mobile
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+
     const card = document.createElement('div');
     card.className = 'result-card';
-    card.id = `result-${i}`;
+    const imgUrl = `${data.download_url}?t=${Date.now()}`;
+    const fname  = files[i].name.replace(/\.[^.]+$/, '') + '.png';
+    const method = methodLabel(data.method);
+
     card.innerHTML = `
-      <div class="result-preview">
-        <img src="${data.download_url}?t=${Date.now()}" alt="Result" loading="lazy">
+      <div class="result-preview" onclick="openLightbox('${imgUrl}', ${i})">
+        <img src="${imgUrl}" alt="Result" loading="lazy">
       </div>
       <div class="result-footer">
-        <span class="result-name">${files[i].name.replace(/\.[^.]+$/, '')}.png</span>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 6px;border-radius:2px;background:rgba(0,229,160,0.1);color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;">${methodLabel(data.method)}</span>
-        <button class="result-dl" onclick="downloadSingle(${i})">↓ Save</button>
+        <div class="result-name">${fname}</div>
+        <div class="result-actions">
+          <button class="result-dl" onclick="downloadSingle(${i})">↓ Save PNG</button>
+          <span class="result-method">${method}</span>
+        </div>
       </div>
     `;
     grid.appendChild(card);
+  }
+
+  // ── Lightbox ──────────────────────────────────────────────────────────────
+  function openLightbox(url, i) {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = url;
+    document.getElementById('lightboxDlBtn').onclick = () => downloadSingle(i);
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
   }
 
   // ── Download ──────────────────────────────────────────────────────────────
@@ -916,7 +1040,7 @@
 
   function downloadAll() {
     files.filter(f => f.downloadUrl).forEach((_, i) => {
-      setTimeout(() => downloadSingle(i), i * 300);
+      setTimeout(() => downloadSingle(i), i * 400);
     });
   }
 
@@ -932,44 +1056,109 @@
     renderBatch();
   }
 
-
-  // ── Clipboard Paste (Ctrl+V anywhere) ────────────────────────────────────
-  document.addEventListener('paste', handlePasteEvent);
-
-  function handlePasteEvent(e) {
-    const items = e.clipboardData?.items;
-    if (!items) return;
-    for (const item of items) {
+  // ── Paste ────────────────────────────────────────────────────────────────
+  document.addEventListener('paste', e => {
+    for (const item of e.clipboardData?.items || []) {
       if (item.type.startsWith('image/')) {
         const blob = item.getAsFile();
-        const file = new File([blob], `pasted-${Date.now()}.png`, { type: blob.type });
-        addFiles([file]);
-        showToast('✓ Image pasted from clipboard');
+        addFiles([new File([blob], `pasted-${Date.now()}.png`, { type: blob.type })]);
+        showToast('✓ Image pasted');
         return;
       }
     }
-  }
+  });
 
   async function triggerPaste() {
     try {
-      // Try modern Clipboard API first
-      const clipItems = await navigator.clipboard.read();
-      for (const item of clipItems) {
+      const items = await navigator.clipboard.read();
+      for (const item of items) {
         for (const type of item.types) {
           if (type.startsWith('image/')) {
             const blob = await item.getType(type);
-            const file = new File([blob], `pasted-${Date.now()}.png`, { type });
-            addFiles([file]);
-            showToast('✓ Image pasted from clipboard');
+            addFiles([new File([blob], `pasted-${Date.now()}.png`, { type })]);
+            showToast('✓ Image pasted');
             return;
           }
         }
       }
-      showToast('⚠ No image found in clipboard — try Ctrl+V');
+      showToast('No image in clipboard — try Ctrl+V');
     } catch {
-      // Fallback: ask user to press Ctrl+V
-      showToast('Press Ctrl+V to paste an image');
+      showToast('Press Ctrl+V to paste');
     }
+  }
+
+  // ── Camera ────────────────────────────────────────────────────────────────
+  async function startCameraStream(facingMode) {
+    const video = document.getElementById('cameraPreview');
+    if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
+
+    try {
+      cameraStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: facingMode }, width: { ideal: 1280 }, height: { ideal: 720 } },
+        audio: false
+      });
+      video.srcObject = cameraStream;
+      currentFacingMode = facingMode;
+    } catch {
+      cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      video.srcObject = cameraStream;
+    }
+  }
+
+  async function openCamera() {
+    try {
+      await startCameraStream(currentFacingMode);
+      document.getElementById('cameraModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    } catch (err) {
+      if (err.name === 'NotAllowedError') showError('Camera access denied.');
+      else if (err.name === 'NotFoundError') showError('No camera found.');
+      else showError('Could not open camera: ' + err.message);
+    }
+  }
+
+  async function flipCamera() {
+    const btn = document.getElementById('flipCameraBtn');
+    btn.style.opacity = '0.4';
+    const next = currentFacingMode === 'environment' ? 'user' : 'environment';
+    try {
+      await startCameraStream(next);
+      showToast(next === 'environment' ? '📷 Back camera' : '🤳 Front camera');
+    } catch (e) {
+      showError('Could not switch: ' + e.message);
+    } finally {
+      btn.style.opacity = '1';
+    }
+  }
+
+  function closeCamera() {
+    if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
+    document.getElementById('cameraPreview').srcObject = null;
+    document.getElementById('cameraModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function capturePhoto() {
+    const video = document.getElementById('cameraPreview');
+    if (!video.srcObject) return;
+    const canvas = document.createElement('canvas');
+    canvas.width  = video.videoWidth  || 1280;
+    canvas.height = video.videoHeight || 720;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.toBlob(blob => {
+      addFiles([new File([blob], `camera-${Date.now()}.png`, { type: 'image/png' })]);
+      showToast('✓ Photo captured!');
+      closeCamera();
+    }, 'image/png');
+  }
+
+  document.getElementById('cameraModal').addEventListener('click', function(e) {
+    if (e.target === this) closeCamera();
+  });
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  function methodLabel(m) {
+    return { 'ai': 'AI', 'ai-enhanced': 'AI+', 'document': 'DOC' }[m] || (m || 'AI');
   }
 
   function showToast(msg) {
@@ -979,179 +1168,14 @@
     setTimeout(() => el.classList.remove('show'), 2500);
   }
 
-  // ── Camera Capture ────────────────────────────────────────────────────────
-  let cameraStream = null;
-
-  // Track which camera is active: 'user' = front, 'environment' = back
-  let currentFacingMode = 'environment';  // default to back camera
-  let isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  async function startCameraStream(facingMode) {
-    const video = document.getElementById('cameraPreview');
-
-    // Stop existing stream first
-    if (cameraStream) {
-      cameraStream.getTracks().forEach(t => t.stop());
-      cameraStream = null;
-    }
-
-    try {
-      cameraStream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: { ideal: facingMode },
-          width:  { ideal: 1280 },
-          height: { ideal: 720 }
-        },
-        audio: false
-      });
-      video.srcObject = cameraStream;
-      currentFacingMode = facingMode;
-
-      // Fix orientation on mobile — rotate video if needed
-      const track = cameraStream.getVideoTracks()[0];
-      const settings = track.getSettings();
-      updateVideoOrientation(video, settings);
-
-      // Always show flip button on mobile, hide on desktop
-      const flipBtn = document.getElementById('flipCameraBtn');
-      if (flipBtn) flipBtn.style.display = isMobile ? 'inline-flex' : 'none';
-
-    } catch (err) {
-      // Fallback: try without facingMode constraint
-      try {
-        cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        video.srcObject = cameraStream;
-        currentFacingMode = facingMode;
-      } catch (fallbackErr) {
-        throw fallbackErr;
-      }
-    }
-  }
-
-  function updateVideoOrientation(video, settings) {
-    // Reset any previous transform
-    video.style.transform = '';
-    video.style.width = '100%';
-    video.style.height = '';
-
-    // On mobile, if video is portrait but container is landscape (or vice versa), fix it
-    if (isMobile && settings && settings.width && settings.height) {
-      if (settings.width < settings.height) {
-        // Portrait video — ensure it displays correctly
-        video.style.width = 'auto';
-        video.style.height = '100%';
-        video.style.maxWidth = '100%';
-      }
-    }
-  }
-
-  async function openCamera() {
-    const modal = document.getElementById('cameraModal');
-    try {
-      await startCameraStream(currentFacingMode);
-      modal.classList.add('open');
-    } catch (err) {
-      if (err.name === 'NotAllowedError') {
-        showError('Camera access denied. Please allow camera permission in your browser.');
-      } else if (err.name === 'NotFoundError') {
-        showError('No camera found on this device.');
-      } else {
-        showError('Could not open camera: ' + err.message);
-      }
-    }
-  }
-
-  async function flipCamera() {
-    const flipBtn = document.getElementById('flipCameraBtn');
-    const newFacing = currentFacingMode === 'environment' ? 'user' : 'environment';
-    if (flipBtn) flipBtn.style.opacity = '0.5';
-    try {
-      await startCameraStream(newFacing);
-      showToast(newFacing === 'environment' ? '📷 Back camera' : '🤳 Front camera');
-    } catch (err) {
-      showError('Could not switch camera: ' + err.message);
-    } finally {
-      if (flipBtn) flipBtn.style.opacity = '1';
-    }
-  }
-
-  function closeCamera() {
-    const modal = document.getElementById('cameraModal');
-    const video = document.getElementById('cameraPreview');
-    if (cameraStream) {
-      cameraStream.getTracks().forEach(t => t.stop());
-      cameraStream = null;
-    }
-    video.srcObject = null;
-    modal.classList.remove('open');
-  }
-
-  function capturePhoto() {
-    const video = document.getElementById('cameraPreview');
-    if (!video.srcObject) return;
-
-    const canvas = document.createElement('canvas');
-    canvas.width  = video.videoWidth  || 1280;
-    canvas.height = video.videoHeight || 720;
-    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    canvas.toBlob(blob => {
-      const filename = `camera-${Date.now()}.png`;
-      const file = new File([blob], filename, { type: 'image/png' });
-      addFiles([file]);
-      showToast('✓ Photo captured!');
-      closeCamera();
-    }, 'image/png');
-  }
-
-  // Close camera modal on overlay click
-  document.getElementById('cameraModal').addEventListener('click', function(e) {
-    if (e.target === this) closeCamera();
-  });
-
-  function methodLabel(m) {
-    return { 'ai': 'AI', 'ai-enhanced': 'AI+', 'document': 'DOC' }[m] || m;
-  }
-
-  // ── Error ─────────────────────────────────────────────────────────────────
   function showError(msg) {
-    const b = document.getElementById('errorBanner');
     document.getElementById('errorText').textContent = msg;
-    b.style.display = 'flex';
+    document.getElementById('errorBanner').style.display = 'flex';
   }
 
   function hideError() {
     document.getElementById('errorBanner').style.display = 'none';
   }
 </script>
-
-<!-- Camera Modal -->
-<div class="modal-overlay" id="cameraModal">
-  <div class="modal">
-    <div class="modal-header">
-      <span>// Camera Capture</span>
-      <button class="modal-close" onclick="closeCamera()">×</button>
-    </div>
-    <video id="cameraPreview" autoplay playsinline muted></video>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeCamera()">Cancel</button>
-      <button class="btn btn-ghost" id="flipCameraBtn" onclick="flipCamera()" title="Switch camera">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M1 4v6h6"/><path d="M23 20v-6h-6"/>
-          <path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/>
-        </svg>
-        Flip
-      </button>
-      <button class="btn btn-primary" onclick="capturePhoto()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
-        Capture Photo
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Paste Toast -->
-<div class="paste-flash" id="pasteFlash"></div>
-
 </body>
 </html>
